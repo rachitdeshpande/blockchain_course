@@ -132,8 +132,8 @@ bitcoinBackend.get('/mine',function(req,res){
 
 bitcoinBackend.post('/receive-new-block',function(req,res){
     const newBlock = req.body.newBlock;
-    const lastBlock = bircoin.getLastBlock();
-    const correctHash = lastblock.hash === newBlock.previousBlockHash;
+    const lastBlock = bitcoin.getLastBlock();
+    const correctHash = lastBlock.hash === newBlock.previousBlockHash;
     const correctIndex = lastBlock['index'] + 1 === newBlock['index']
 });
 
