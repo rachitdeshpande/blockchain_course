@@ -2,11 +2,11 @@ const express = require('express')
 const bitcoinBackend = express()
 const bodyParser = require('body-parser');
 const Blockchain = require('./blockchain');
-const uuid = require('uuid');
+const { v1: uuid } = require('uuid');
 const port = process.argv[2]
 const rp = require('request-promise');
 
-const nodeAddress = uuid.v1().split("-").join("");
+const nodeAddress = uuid().split("-").join("");
 const bitcoin = new Blockchain()
 
 bitcoinBackend.use(bodyParser.json());
@@ -24,6 +24,7 @@ bitcoinBackend.get('/blockchain',function(req,res){
 
 bitcoinBackend.post('/transaction',function(req,res){
     const newTransaction = req.body;
+    //console.log(newTransaction)
 	const blockIndex = bitcoin.addTransactionToPendingTransactions(newTransaction);
 	res.json({ note: `Transaction will be added in block ${blockIndex}.` });
 })
@@ -69,7 +70,7 @@ bitcoinBackend.get('/mine',function(req,res){
         index: lastBlock['index'] + 1
     }
     const nonce = bitcoin.proofOfWork(previousBlockHash,currentBlockData)
-    const blockHash = bitcoin.generateHash(previousBlockHash,currentBlockData,nonce)
+    const hash = bitcoin.generateHash(previousBlockHash,currentBlockData,nonce)
     const newBlock = bitcoin.createNewBlock(nonce,previousBlockHash,hash)
 
     //part - 2 -- broadcast node to all other nodes

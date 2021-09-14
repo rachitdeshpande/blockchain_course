@@ -1,5 +1,5 @@
 const sha256 = require('sha256')
-const uuid = require('uuid');
+const { v1: uuid } = require('uuid');
 
 function Blockchain(){
     this.chain = []; //to store the blocks information
@@ -34,7 +34,7 @@ Blockchain.prototype.createNewTransaction = function(amount, sender, recipient){
         amount: amount,
         sender: sender,
         recipient: recipient,
-        transactionId: uuid.split('-').join(')')
+        transactionId: uuid().split('-').join(')')
     };
     return newTransaction;
 }
