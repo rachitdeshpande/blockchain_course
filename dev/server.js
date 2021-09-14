@@ -1,13 +1,16 @@
 const express = require('express')
-const bodyParser = require('body-parser');
 const bitcoinBackend = express()
-const Blockchain = require('./blockchain')
-const bitcoin = new Blockchain()
-bitcoinBackend.use(bodyParser.json());
-bitcoinBackend.use(bodyParser.urlencoded({extended: false}));
+const bodyParser = require('body-parser');
+const Blockchain = require('./blockchain');
+const uuid = require('uuid');
+const port = process.argv[2]
 const rp = require('request-promise');
 
-const port = process.argv[2]
+const nodeAddress = uuid.v1().split("-").join("");
+const bitcoin = new Blockchain()
+
+bitcoinBackend.use(bodyParser.json());
+bitcoinBackend.use(bodyParser.urlencoded({extended: false}));
 
 bitcoinBackend.get('/home',function(req,res){
     res.send('This is homepage');
@@ -177,12 +180,10 @@ bitcoinBackend.post('/register-broadcast-node',function(req,res){
 
 bitcoinBackend.post('/register-node',function(req,res){
     const newNodeUrl = req.body.newNodeUrl;
-    const nodeNotAreadyPresent = bitcoin.networkNodes.indexOf(newNodeUrl) == -1;
+    const nodeNotAlreadyPresent = bitcoin.networkNodes.indexOf(newNodeUrl) == -1;
     const notCurrentNode = bitcoin.currentNodeUrl != newNodeUrl
-    if(nodeNotAreadyPresent && notCurrentNode){
-        bitcoin.networkNodes.push(newNodeUrl);
-        res.json({note:'new node registered successfully'});
-    }
+    if (nodeNotAlreadyPresent && notCurrentNode) bitcoin.networkNodes.push(newNodeUrl);
+	res.json({ note: 'New node registered successfully.' });
 });
 
 //register multiple nodes at once

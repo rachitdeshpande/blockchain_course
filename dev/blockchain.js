@@ -1,5 +1,5 @@
 const sha256 = require('sha256')
-const uuid = require('uuid/v1');
+const uuid = require('uuid');
 
 function Blockchain(){
     this.chain = []; //to store the blocks information
