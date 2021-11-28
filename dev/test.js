@@ -9,8 +9,8 @@ const currentBlockData = {
 }
 
 // const blockInfo = bitcoin.createNewBlock(3234234,'asdasdasd','adasdasdasd');
-//const hash = bitcoin.generateHash(3234234,'asdasdasd','adasdasdasd');
+// const hash = bitcoin.generateHash(3234234,'asdasdasd','adasdasdasd');
 const nonce = bitcoin.proofOfWork(previousBlockHash,currentBlockData);
 
 console.log(nonce);
-//console.log(blockInfo)
+// console.log(blockInfo)
